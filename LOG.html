@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Players</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes buttonHover {
+            from {
+                background-color: #007bff;
+            }
+            to {
+                background-color: #0056b3;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://cdn.discordapp.com/attachments/898050262441287701/1241331498330886246/lanius_planning_by_herckeim_de5oizn-fullview.jpg?ex=6649cf8c&is=66487e0c&hm=903e8ebbf7cc306d6f558a54f764c3a724a726713644b50b1e932f8d4c3a89dc&');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+       
+.container {
+    background: linear-gradient(to right, #f0f0f0, #e0e0e0);
+  padding: 30px 50px;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Adjust shadow properties */
+  text-align: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+        h1 {
+            color: brown;
+            font-family: "Old English Text MT";
+        }
+
+        label {
+            font-size: 1.2em;
+            color: brown;
+            font-family: "Old English Text MT";
+        }
+
+        select {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid 	#eed9c4;
+            margin-top: 10px;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: brown;
+            background-color: 	black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            animation: buttonHover 0.3s forwards;
+        }
+
+        .selected-token {
+            border: 2px solid #007bff;
+        }
+
+        .tokens-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 10px 0;
+            border-radius: 50px;
+        }
+
+        .token-box {
+            border-radius: 100px;
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .token-box:hover {
+            transform: scale(1.1);
+            border-color: green;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .container {
+        background: 	#eed9c4;
+        padding: 30px 50px;
+        border-radius: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: fadeIn 2s ease-in-out;
+    }
+    .popup-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .popup-container.show {
+            display: block;
+            background-color: #eed9c4;
+        }
+
+        .popup-container button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: brown;
+            background-color: 	black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .player-label {
+    font-family: Arial, sans-serif; /* Specify your desired font family */
+    font-size: 1.2em; /* Adjust font size as needed */
+    color: brown; /* Adjust font color as needed */
+    font-weight: bold; /* Optionally adjust font weight */
+}
+
+.popup-button {
+    margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: brown;
+            background-color: 	black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+}
+
+.popup-button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>General's Conquest</h1>
+        <form id="player-form" action="MONOPOLY.html" method="GET">
+            <div id="token-selectors"></div>
+            <input type="submit" id="play-button" value="Play" disabled>
+        </form>
+
+        <button class="popup-button" onclick="showPopup()">Click here to add a player</button>
+        <div id="popup" class="popup-container">
+            <button onclick="addPlayer('Player')">Player</button>
+            <button onclick="addPlayer('Bot')">Bot</button>
+        </div>
+        <div id="players-container"></div>
+    </div>
+
+    <script>
+        let playerCount = 0; // Initialize player count
+        let selectedTokens = []; // Array to store selected tokens
+        document.getElementById('player-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Check if at least two players have selected tokens
+    if (selectedTokens.length < 2) {
+        alert('Please select tokens for at least two players.');
+        return;
+    }
+
+    // Redirect to the game board with selected tokens as query parameters
+    const selectedTokensQuery = selectedTokens.map((token, index) => `player${index + 1}=${token}`).join('&');
+    // Instead of redirecting, let's create elements representing the selected tokens
+    selectedTokens.forEach((token, index) => {
+        const playerNumber = index + 1;
+        const tokenElement = document.createElement('div');
+        tokenElement.innerText = `Player ${playerNumber}: ${token}`;
+        // Append the token element to the game board
+        document.getElementById('game-board').appendChild(tokenElement);
+    });
+});
+
+        // Function to add a player
+        function addPlayer(type) {
+            const playerContainer = document.getElementById('players-container');
+            
+            // Check if the maximum number of players (5) has been reached
+            if (playerCount >= 5) {
+                alert('The maximum number of players (5) has been reached.');
+                return;
+            }
+
+            const playerIndex = playerCount + 1; // Calculate player index
+            playerCount++; // Increment player count
+
+            const playerDiv = document.createElement('div');
+            playerDiv.innerHTML = `
+                <p class="player-label">${type === 'Player' ? 'Player' : 'Bot'} ${playerIndex}:</p>
+            `;
+
+            // Add token selector for the new player
+            const tokensContainer = document.createElement('div');
+            tokensContainer.className = 'tokens-container';
+            tokensContainer.dataset.player = playerIndex; // Assign data attribute for player
+
+            if (type === 'Bot') {
+                // For bot, select a random token
+                const tokens = [
+                    { name: 'Medic', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241311508999180319/Screenshot_2024-05-18_164826-removebg-preview.png?ex=6649bcee&is=66486b6e&hm=b7be5bdebee9a47f1eaa2de7ef425bd51d6ab6701a96a2ca646059475b6b3521&' },
+                    { name: 'Medal', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241309892157902958/Screenshot_2024-05-18_164149-removebg-preview.png?ex=6649bb6c&is=664869ec&hm=0488fc5a81e4e174237cdd8c79733bba49032b3998abc9a052f270fbfb106205&' },
+                    { name: 'Compass', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241308019007029338/pixel-art-illustration-compass-pixelated-compass-compass-icon-pixelated-for-the-pixel-art-game-and-icon-for-website-and-video-game-old-school-retro-vector-removebg-preview_1.png?ex=6649b9ae&is=6648682e&hm=f95a342902a25b4f20af02a7561a319a6c194df8f549c4f02c02ef2869763066&' },
+                    { name: 'Binoculars', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241309287238602834/Screenshot_2024-05-18_163930-removebg-preview.png?ex=6649badc&is=6648695c&hm=8a87e0bd62145bc1487e6b652d34bbd34f26b8f385f87e2e7640e8f45eb6c202&' }
+                ];
+                const randomIndex = Math.floor(Math.random() * tokens.length);
+                const selectedToken = tokens[randomIndex];
+
+                // Create a token box for the selected token
+                const tokenBox = document.createElement('div');
+                tokenBox.className = 'token-box';
+                tokenBox.dataset.player = playerIndex;
+                tokenBox.dataset.token = selectedToken.name.toLowerCase();
+
+                const img = document.createElement('img');
+                img.src = selectedToken.image;
+                img.alt = selectedToken.name;
+
+                tokenBox.appendChild(img);
+                tokensContainer.appendChild(tokenBox);
+            } else {
+                // For player, show all tokens
+                const tokens = [
+                    { name: 'Medic', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241311508999180319/Screenshot_2024-05-18_164826-removebg-preview.png?ex=6649bcee&is=66486b6e&hm=b7be5bdebee9a47f1eaa2de7ef425bd51d6ab6701a96a2ca646059475b6b3521&' },
+                    { name: 'Medal', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241309892157902958/Screenshot_2024-05-18_164149-removebg-preview.png?ex=6649bb6c&is=664869ec&hm=0488fc5a81e4e174237cdd8c79733bba49032b3998abc9a052f270fbfb106205&' },
+                    { name: 'Compass', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241308019007029338/pixel-art-illustration-compass-pixelated-compass-compass-icon-pixelated-for-the-pixel-art-game-and-icon-for-website-and-video-game-old-school-retro-vector-removebg-preview_1.png?ex=6649b9ae&is=6648682e&hm=f95a342902a25b4f20af02a7561a319a6c194df8f549c4f02c02ef2869763066&' },
+                    { name: 'Binoculars', image: 'https://cdn.discordapp.com/attachments/898050262441287701/1241309287238602834/Screenshot_2024-05-18_163930-removebg-preview.png?ex=6649badc&is=6648695c&hm=8a87e0bd62145bc1487e6b652d34bbd34f26b8f385f87e2e7640e8f45eb6c202&' }
+                ];
+
+                tokens.forEach(token => {
+                    const tokenBox = document.createElement('div');
+                    tokenBox.className = 'token-box';
+                    tokenBox.dataset.player = playerIndex;
+                    tokenBox.dataset.token = token.name.toLowerCase();
+
+                    const img = document.createElement('img');
+                    img.src = token.image;
+                    img.alt = token.name;
+
+                    tokenBox.appendChild(img);
+                    tokensContainer.appendChild(tokenBox);
+                });
+            }
+
+            playerDiv.appendChild(tokensContainer);
+            playerContainer.appendChild(playerDiv);
+
+            // If it's a player, add click event listener to token boxes
+            if (type !== 'Bot') {
+                const tokenBoxes = tokensContainer.querySelectorAll('.token-box');
+                tokenBoxes.forEach(box => {
+                    box.addEventListener('click', selectToken);
+                });
+            }
+
+            document.getElementById('popup').classList.remove('show');
+            const playButton = document.getElementById('play-button');
+            playButton.disabled = playerCount < 2;
+        }
+        document.getElementById('player-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Check if at least two players have selected tokens
+            if (selectedTokens.length < 2) {
+                alert('Please select tokens for at least two players.');
+                return;
+            }
+
+            // Prepare the message to display the number of players and their selected tokens
+            let message = `Number of players: ${playerCount}\n\n`;
+            selectedTokens.forEach((token, index) => {
+                const playerNumber = index + 1;
+                message += `Player ${playerNumber} selected: ${token}\n`;
+            });
+
+            // Display the message
+            alert(message);
+
+            // Redirect to the game board with selected tokens as query parameters
+            const selectedTokensQuery = selectedTokens.map((token, index) => `player${index + 1}=${token}`).join('&');
+            window.location.href = `MONOPOLY.html?${selectedTokensQuery}`;
+        });
+        function selectToken() {
+    const player = this.dataset.player;
+    const token = this.dataset.token;
+
+    // Highlight the selected token
+    const tokensBoxes = document.querySelectorAll(`.tokens-container[data-player="${player}"] .token-box`);
+    tokensBoxes.forEach(box => box.classList.remove('selected-token'));
+    this.classList.add('selected-token');
+
+    // Store the selected token
+    selectedTokens[player - 1] = token;
+
+    console.log(`Player ${player} selected ${token}`);
+}
+
+
+        // Function to handle when the "Play" button is clicked
+        document.getElementById('player-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Check if at least two players have selected tokens
+            if (selectedTokens.length < 2) {
+                alert('Please select tokens for at least two players.');
+                return;
+            }
+
+            // Redirect to the game board with selected tokens as query parameters
+            const selectedTokensQuery = selectedTokens.map((token, index) => `player${index + 1}=${token}`).join('&');
+            window.location.href = `MONOPOLY.html?${selectedTokensQuery}`;
+        });
+
+        function showPopup() {
+            const popup = document.getElementById('popup');
+            popup.classList.toggle('show');
+        }
+        
+    </script>
+</body>
+</html>
