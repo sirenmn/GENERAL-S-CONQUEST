@@ -16,10 +16,10 @@
 
         @keyframes buttonHover {
             from {
-                background-color: #007bff;
+                background-color: #eed9c4;
             }
             to {
-                background-color: #0056b3;
+                background-color: #eed9c4;
             }
         }
 
@@ -37,19 +37,17 @@
         }
         
        
-.container {
-    background: linear-gradient(to right, #f0f0f0, #e0e0e0);
-  padding: 30px 50px;
-  border-radius: 10px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Adjust shadow properties */
-  text-align: center;
-  animation: fadeIn 2s ease-in-out;
-}
+
 
         h1 {
-            color: brown;
-            font-family: "Old English Text MT";
-        }
+    color: brown;
+    font-family: "Old English Text MT";
+    font-size: 6em; /* Adjust the font size as needed */
+    position: absolute; /* Add position absolute */
+    top: 20px; /* Adjust the distance from the top */
+    left: 50%; /* Position it horizontally in the center */
+    transform: translateX(-50%); /* Adjust horizontal alignment */
+}
 
         label {
             font-size: 1.2em;
@@ -81,10 +79,11 @@
             animation: buttonHover 0.3s forwards;
         }
 
-        .selected-token {
-            border: 2px solid #007bff;
-        }
-
+        .token-box.selected-token {
+    border: 3px solid #eed9c4;
+    transform: scale(1.5);
+    transition: border-color 1s ease, transform 0.3s ease;
+}
         .tokens-container {
             display: flex;
             flex-wrap: wrap;
@@ -98,7 +97,7 @@
             width: 100px;
             height: 100px;
             margin: 5px;
-            border: 1px solid #ccc;
+            border: 3px solid brown;
             border-radius: 5px;
             text-align: center;
             transition: transform 0.3s ease, border-color 0.3s ease;
@@ -115,11 +114,7 @@
             object-fit: cover;
         }
         .container {
-        background: 	#eed9c4;
-        padding: 30px 50px;
-        border-radius: 10px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
+      
         animation: fadeIn 2s ease-in-out;
     }
     .popup-container {
@@ -171,9 +166,14 @@
 }
 
 .popup-button:hover {
-    background-color: #0056b3;
+    background-color: #eed9c4;
 }
-
+input[type="submit"],
+.popup-button {
+    padding: 15px 30px; /* Adjust padding to increase button size */
+    font-size: 1.2em; /* Adjust font size to increase button text size */
+    width: 30em;
+}
     </style>
 </head>
 <body>
@@ -327,6 +327,10 @@
         function selectToken() {
     const player = this.dataset.player;
     const token = this.dataset.token;
+    if (this.classList.contains('selected-token')) {
+        // If already selected, return
+        return;
+    }
 
     // Highlight the selected token
     const tokensBoxes = document.querySelectorAll(`.tokens-container[data-player="${player}"] .token-box`);
@@ -337,6 +341,7 @@
     selectedTokens[player - 1] = token;
 
     console.log(`Player ${player} selected ${token}`);
+    
 }
 
 
