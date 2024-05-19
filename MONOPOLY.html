@@ -210,8 +210,6 @@
            
         }
 
-        
-
         .card-box {
             position: absolute;
             width: 15%;
@@ -419,9 +417,6 @@
     opacity: 0.5;
     pointer-events: none; /* Prevent click events */
 }
-
-
-
 
 .player-info img {
     max-width: 50px; /* Adjust the maximum width of the token images */
@@ -656,8 +651,11 @@
         <div class="button-container">
             <button id="roll-dice-button" class="dice">Roll Dice</button>
         </div>
+     
         <script>
-document.getElementById('select-players').addEventListener('click', function() {
+            let currentPlayer = 0; // Start with the first player
+
+    document.getElementById('select-players').addEventListener('click', function() {
     // Show the popup
     document.getElementById('popup-container').style.display = 'flex';
 
@@ -776,56 +774,55 @@ document.getElementById('play-button').addEventListener('click', function() {
         var tokenImage = selectedTokens[i].cloneNode(true); // Clone the selected token image
         tokenImage.classList.add('token');
         tokenImage.alt = 'Token ' + (i + 1); // Set alt text if necessary
+        tokenImage.dataset.player = i; // Set player index
         square2.appendChild(tokenImage); // Append token image to square2
     }
     document.getElementById('select-players').style.display = 'none';
-    document.getElementById('roll-dice-button').style.display = 'block'; document.getElementById('roll-dice-button').style.display = 'block';
+    document.getElementById('roll-dice-button').style.display = 'block';
 });
 
 document.getElementById('roll-dice-button').addEventListener('click', function() {
-    // Add your dice rolling functionality here
-    // For example, you can generate a random number between 1 and 6
+   
     var diceResult = Math.floor(Math.random() * 6) + 1;
-    alert('You rolled a ' + diceResult + '!');
+    alert('Player ' + (currentPlayer + 1) + ' rolled a ' + diceResult + '!');
+    // Move current player's token based on the dice result
+    movePlayerToken(diceResult);
 
-    // Move player tokens based on the dice result
-    movePlayerTokens(diceResult);
+    // Update the current player
+    currentPlayer = (currentPlayer + 1) % document.querySelectorAll('.selected-token').length;
 });
 
-function movePlayerTokens(steps) {
-    // Get all player tokens
-    var playerTokens = document.querySelectorAll('.token');
+function movePlayerToken(steps) {
+    // Get the current player's token
+    var token = document.querySelector(`.token[data-player="${currentPlayer}"]`);
 
-    // Move each player token
-    playerTokens.forEach(function(token) {
-        // Get the current square of the token
-        var currentSquare = token.parentElement;
-        var currentRow = currentSquare.parentElement; // Get the current row
-        
-        // Move the token by the specified number of steps
-        for (var i = 0; i < steps; i++) {
-            // Move to the next square (or loop back to the beginning if at the end)
-            currentSquare = currentSquare.nextElementSibling || currentSquare.parentElement.firstElementChild;
-            
-            // If reached the end of the row, move to the next row
-            if (!currentSquare) {
-                currentRow = currentRow.nextElementSibling || currentRow.parentElement.firstElementChild; // Move to the next row
-                currentSquare = currentRow.firstElementChild; // Move to the first square of the next row
-            }
+    // Get the current square of the token
+    var currentSquare = token.parentElement;
+    var currentRow = currentSquare.parentElement; // Get the current row
+
+    // Move the token by the specified number of steps
+    for (var i = 0; i < steps; i++) {
+        // Move to the next square (or loop back to the beginning if at the end)
+        currentSquare = currentSquare.nextElementSibling || currentSquare.parentElement.firstElementChild;
+
+        // If reached the end of the row, move to the next row
+        if (!currentSquare) {
+            currentRow = currentRow.nextElementSibling || currentRow.parentElement.firstElementChild; // Move to the next row
+            currentSquare = currentRow.firstElementChild; // Move to the first square of the next row
         }
-        
-        // Append the token to the new square
-        currentSquare.appendChild(token);
-    });
+    }
+
+    // Append the token to the new square
+    currentSquare.appendChild(token);
 }
 
-// Call the initializeGame function when the DOM is fully loaded
+function initializeGame() {
+    // Initialize game setup here if necessary
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeGame();
 });
-        </script>
-        
-        
-        
-</body>
+</script>
 </html>
+        
