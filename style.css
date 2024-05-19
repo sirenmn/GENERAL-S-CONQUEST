@@ -12,8 +12,7 @@ div {
 
 .mainSquare {
 	height: 100%;
-	outline: 1px dashed #c2dec5;
-	outline-offset: -13px;
+	
 }
 
 .row {
@@ -169,7 +168,7 @@ div {
 }
 
 .orange {
-  background-color: #f7941d;
+  background-color: transparent;
 }
 
 .purple {
@@ -200,7 +199,7 @@ div {
 
 .logoName {
 	font-size: 7.1vw;
-	color: white;
+	color: #ffdc73;
 	font-family: futura;
 	text-shadow: -4px 3px 0px black;
 	-webkit-text-fill-color: white; /* Will override color (regardless of order) */
@@ -212,15 +211,16 @@ div {
 	position: absolute;
 	width: 15%;
 	height: 9vw;
+	border: 3px solid#ffdc73;
 }
 
 .card-blue {
-	background: linear-gradient(#4ccaf4, #a3dff9);
+	background-color: transparent;
 	transform: rotateZ(-45deg) translateX(-13%) translateY(66%);
 }
 
 .card-blue-inside {
-    background: linear-gradient(#a3dff9, #4ccaf4);
+	background-color: transparent;
     width: 94%;
     height: 94%;
     margin: 0.3vw auto;
@@ -228,12 +228,12 @@ div {
 }
 
 .card-orange {
-	background: linear-gradient(#f99120, #f57420);
+	background-color: transparent;
 	transform: rotateZ(-45deg) translateX(-13%) translateY(610%);
 }
 
 .card-orange-inside {
-    background: linear-gradient(#f57420, #f99120);
+    background-color: transparent;
     width: 94%;
     height: 94%;
     margin: 0.3vw auto;
