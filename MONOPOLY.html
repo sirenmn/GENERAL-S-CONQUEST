@@ -667,137 +667,175 @@
      
         <script>
             let currentPlayer = 0; // Start with the first player
-            let playerMoney = [1500, 1500, 1500, 1500]; // Starting money for each player
-            let properties = {}; // Object to track property ownership
-    
 
+    document.getElementById('select-players').addEventListener('click', function() {
+    // Show the popup
+    document.getElementById('popup-container').style.display = 'flex';
 
-            document.getElementById('select-players').addEventListener('click', function() {
-                // Show the popup
-                document.getElementById('popup-container').style.display = 'flex';
-                // Clear previous options if any
-                document.getElementById('option-container').innerHTML = '';
-                document.getElementById('token-container').innerHTML = ''; // Clear token container as well
-                // Array of options
-                var options = ['2 Players', '3 Players', '4 Players'];
-                // Create options dynamically
-                options.forEach(function(option) {
-                    var optionElement = document.createElement('div');
-                    optionElement.classList.add('option');
-                    optionElement.textContent = option;
-                    optionElement.addEventListener('click', function() {
-                        // Call the function to show token options based on the selected number of players
-                        showTokenOptions(parseInt(option));
-                    });
-                    document.getElementById('option-container').appendChild(optionElement);
+    // Clear previous options if any
+    document.getElementById('option-container').innerHTML = '';
+    document.getElementById('token-container').innerHTML = ''; // Clear token container as well
+
+    // Array of options
+    var options = ['2 Players', '3 Players', '4 Players'];
+
+    // Create options dynamically
+    options.forEach(function(option) {
+        var optionElement = document.createElement('div');
+        optionElement.classList.add('option');
+        optionElement.textContent = option;
+        optionElement.addEventListener('click', function() {
+            // Call the function to show token options based on the selected number of players
+            showTokenOptions(parseInt(option));
+        });
+        document.getElementById('option-container').appendChild(optionElement);
+    });
+});
+
+function showTokenOptions(numPlayers) {
+    // Clear previous token options if any
+    document.getElementById('token-container').innerHTML = '';
+
+    // Array of tokens
+    var tokens = ['medic.png', 'compass.png', 'binoculars.png', 'medal.png']; // Customize with your token images or names
+
+    // Create flexboxes with tokens dynamically
+    for (var i = 0; i < numPlayers; i++) {
+        var playerLabel = document.createElement('div');
+        playerLabel.textContent = 'Player ' + (i + 1) + ':';
+        playerLabel.style.marginBottom = '5px'; // Add some spacing between the label and the tokens
+        document.getElementById('token-container').appendChild(playerLabel);
+
+        var tokenElement = document.createElement('div');
+        tokenElement.classList.add('token-option');
+        tokenElement.dataset.player = i + 1; // Add player number to the token option
+
+        for (var j = 0; j < tokens.length; j++) {
+            var tokenBox = document.createElement('div');
+            tokenBox.classList.add('token-box');
+            // Create an image element for each token
+            var tokenImage = document.createElement('img');
+            tokenImage.src = tokens[j];
+            tokenBox.appendChild(tokenImage);
+            tokenBox.addEventListener('click', function() {
+                // Get the player number from the parent token option
+                var playerNumber = this.parentElement.dataset.player;
+
+                // Remove highlight from all tokens for this player
+                var siblingTokens = document.querySelectorAll('[data-player="' + playerNumber + '"] .token-box');
+                siblingTokens.forEach(function(token) {
+                    token.classList.remove('selected-token');
                 });
-            });
-    
 
+                // Highlight the selected token
+                this.classList.add('selected-token');
 
-            function showTokenOptions(numPlayers) {
-                // Clear previous token options if any
-                document.getElementById('token-container').innerHTML = '';
-                // Array of tokens
-                var tokens = ['medic.png', 'compass.png', 'binoculars.png', 'medal.png']; // Customize with your token images or names
-                // Create flexboxes with tokens dynamically
-                for (var i = 0; i < numPlayers; i++) {
-                    var playerLabel = document.createElement('div');
-                    playerLabel.textContent = 'Player ' + (i + 1) + ':';
-                    playerLabel.style.marginBottom = '5px'; // Add some spacing between the label and the tokens
-                    document.getElementById('token-container').appendChild(playerLabel);
-                    var tokenElement = document.createElement('div');
-                    tokenElement.classList.add('token-option');
-                    tokenElement.dataset.player = i + 1; // Add player number to the token option
-                    for (var j = 0; j < tokens.length; j++) {
-                        var tokenBox = document.createElement('div');
-                        tokenBox.classList.add('token-box');
-                        // Create an image element for each token
-                        var tokenImage = document.createElement('img');
-                        tokenImage.src = tokens[j];
-                        tokenBox.appendChild(tokenImage);
-                        tokenBox.addEventListener('click', function() {
-                            // Get the player number from the parent token option
-                            var playerNumber = this.parentElement.dataset.player;
-                            // Remove highlight from all tokens for this player
-                            var siblingTokens = document.querySelectorAll('[data-player="' + playerNumber + '"] .token-box');
-                            siblingTokens.forEach(function(token) {
-                                token.classList.remove('selected-token');
-                            });
-                            // Highlight the selected token
-                            this.classList.add('selected-token');
-                            // Disable the selected token for other players
-                            var selectedTokenSrc = this.querySelector('img').src;
-                            var allTokenBoxes = document.querySelectorAll('.token-box img');
-                            allTokenBoxes.forEach(function(img) {
-                                if (img.src === selectedTokenSrc && !img.parentElement.classList.contains('selected-token')) {
-                                    img.parentElement.classList.add('disabled-token');
-                                }
-                            });
-                        });
-                        tokenElement.appendChild(tokenBox);
+                // Disable the selected token for other players
+                var selectedTokenSrc = this.querySelector('img').src;
+                var allTokenBoxes = document.querySelectorAll('.token-box img');
+                allTokenBoxes.forEach(function(img) {
+                    if (img.src === selectedTokenSrc && !img.parentElement.classList.contains('selected-token')) {
+                        img.parentElement.classList.add('disabled-token');
                     }
-                    document.getElementById('token-container').appendChild(tokenElement);
-                }
-                // Make sure the token options are visible
-                document.getElementById('token-container').style.display = 'block';
-                // Show the play button
-                document.getElementById('play-button').style.display = 'block';
-            }
-
-
-            document.getElementById('play-button').addEventListener('click', function() {
-                var playerInfoContainer = document.getElementById('player-info-container');
-                playerInfoContainer.innerHTML = ''; // Clear previous player info
-                // Get all selected tokens
-                var selectedTokens = document.querySelectorAll('.selected-token');
-                selectedTokens.forEach(function(token, index) {
-                    var playerInfo = document.createElement('div');
-                    playerInfo.classList.add('player-info');
-                    var playerTitle = document.createElement('h3');
-                    playerTitle.textContent = 'Player ' + (index + 1);
-                    playerInfo.appendChild(playerTitle);
-                    var tokenImage = token.querySelector('img').cloneNode();
-                    playerInfo.appendChild(tokenImage);
-                    var money = document.createElement('div');
-                    money.classList.add('money');
-                    money.textContent = 'Money: $' + playerMoney[index];
-                    playerInfo.appendChild(money);
-                    playerInfoContainer.appendChild(playerInfo);
                 });
-                // Show the player info container
-                playerInfoContainer.style.display = 'block';
-                // Hide the popup
-                document.getElementById('popup-container').style.display = 'none';
             });
-    
-            document.getElementById('play-button').addEventListener('click', function() {
-                var selectedTokens = document.querySelectorAll('.selected-token img');
-                var numPlayers = selectedTokens.length;
-                var square2 = document.querySelector('.square2');
-                // Generate tokens for each player
-                for (var i = 0; i < numPlayers; i++) {
-                    var tokenImage = selectedTokens[i].cloneNode(true); // Clone the selected token image
-                    tokenImage.classList.add('token');
-                    tokenImage.alt = 'Token ' + (i + 1); // Set alt text if necessary
-                    tokenImage.dataset.player = i; // Set player index
-                    square2.appendChild(tokenImage); // Append token image to square2
-                }
-                document.getElementById('select-players').style.display = 'none';
-                document.getElementById('roll-dice-button').style.display = 'block';
-            });
-            document.getElementById('roll-dice-button').addEventListener('click', function() {
-                var diceResult = Math.floor(Math.random() * 6) + 1;
-                alert('Player ' + (currentPlayer + 1) + ' rolled a ' + diceResult + '!');
-                // Move current player's token based on the dice result
-                movePlayerToken(diceResult);
-                // Update the current player
-                currentPlayer = (currentPlayer + 1) % document.querySelectorAll('.selected-token').length;
-            });
+            tokenElement.appendChild(tokenBox);
+        }
+        document.getElementById('token-container').appendChild(tokenElement);
+    }
+    // Make sure the token options are visible
+    document.getElementById('token-container').style.display = 'block';
 
+    // Show the play button
+    document.getElementById('play-button').style.display = 'block';
+}
 
+document.getElementById('play-button').addEventListener('click', function() {
+    var playerInfoContainer = document.getElementById('player-info-container');
+    playerInfoContainer.innerHTML = ''; // Clear previous player info
 
+    // Get all selected tokens
+    var selectedTokens = document.querySelectorAll('.selected-token');
+    selectedTokens.forEach(function(token, index) {
+        var playerInfo = document.createElement('div');
+        playerInfo.classList.add('player-info');
 
+        var playerTitle = document.createElement('h3');
+        playerTitle.textContent = 'Player ' + (index + 1);
+        playerInfo.appendChild(playerTitle);
+
+        var tokenImage = token.querySelector('img').cloneNode();
+        playerInfo.appendChild(tokenImage);
+
+        playerInfoContainer.appendChild(playerInfo);
+    });
+
+    // Show the player info container
+    playerInfoContainer.style.display = 'block';
+
+    // Hide the popup
+    document.getElementById('popup-container').style.display = 'none';
+});
+
+document.getElementById('play-button').addEventListener('click', function() {
+    var selectedTokens = document.querySelectorAll('.selected-token img');
+    var numPlayers = selectedTokens.length;
+    var square2 = document.querySelector('.square2');
+
+    // Generate tokens for each player
+    for (var i = 0; i < numPlayers; i++) {
+        var tokenImage = selectedTokens[i].cloneNode(true); // Clone the selected token image
+        tokenImage.classList.add('token');
+        tokenImage.alt = 'Token ' + (i + 1); // Set alt text if necessary
+        tokenImage.dataset.player = i; // Set player index
+        square2.appendChild(tokenImage); // Append token image to square2
+    }
+    document.getElementById('select-players').style.display = 'none';
+    document.getElementById('roll-dice-button').style.display = 'block';
+});
+
+document.getElementById('roll-dice-button').addEventListener('click', function() {
+   
+    var diceResult = Math.floor(Math.random() * 6) + 1;
+    alert('Player ' + (currentPlayer + 1) + ' rolled a ' + diceResult + '!');
+    // Move current player's token based on the dice result
+    movePlayerToken(diceResult);
+
+    // Update the current player
+    currentPlayer = (currentPlayer + 1) % document.querySelectorAll('.selected-token').length;
+});
+
+function movePlayerToken(steps) {
+    // Get the current player's token
+    var token = document.querySelector(`.token[data-player="${currentPlayer}"]`);
+
+    // Get the current square of the token
+    var currentSquare = token.parentElement;
+    var currentRow = currentSquare.parentElement; // Get the current row
+
+    // Move the token by the specified number of steps
+    for (var i = 0; i < steps; i++) {
+        // Move to the next square (or loop back to the beginning if at the end)
+        currentSquare = currentSquare.nextElementSibling || currentSquare.parentElement.firstElementChild;
+
+        // If reached the end of the row, move to the next row
+        if (!currentSquare) {
+            currentRow = currentRow.nextElementSibling || currentRow.parentElement.firstElementChild; // Move to the next row
+            currentSquare = currentRow.firstElementChild; // Move to the first square of the next row
+        }
+    }
+
+    // Append the token to the new square
+    currentSquare.appendChild(token);
+}
+
+function initializeGame() {
+    // Initialize game setup here if necessary
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeGame();
+});
 </script>
 </body>
 </html>
