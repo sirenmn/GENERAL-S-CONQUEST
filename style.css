@@ -28,14 +28,14 @@ div {
 	height: 69.23076923%;
 }
 .square1 {
-	outline: 1px solid black;
+	outline: 1px solid white;
 	flex-grow: 1;
 	position: relative;
 }
 
 .square2 {
 	flex-grow: 2;
-	outline: 1px solid black;
+	outline: 1px solid white;
 	display: flex;
 	flex-direction: column;
 	position: relative;
@@ -43,11 +43,11 @@ div {
 
 .square9 {
 	flex-grow: 9;
-	outline: 1px solid black;
+	outline: 1px solid white;
 }
 
 .squareSide {
-	outline: 1px solid black;
+	outline: 1px solid white;
 	width: 100%;
 	flex-grow: 1;
 	position: relative;
@@ -56,7 +56,7 @@ div {
 .header {
 	height: 21%;
 	position: absolute;
-	outline: 2px solid black;
+	outline: 1px solid white;
 	background: grey;
 	/* width: 100%; */
 }
@@ -65,7 +65,7 @@ div {
 	/* height: 100%; */
 	width: 21%;
 	position: absolute;
-	outline: 2px solid black;
+	outline: 1px solid white;
 }
 
 .header-top {
@@ -271,7 +271,7 @@ div {
 .squareCorner {
 	height: 65%;
 	width: 65%;
-	border: 2px solid black;
+	border: 1px solid white;
 	right: -1px;
 	top: -1px;
 	position: absolute;
