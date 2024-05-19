@@ -3,23 +3,30 @@
 <head>
     <meta charset="utf-8" />
     <title>General's Conquest</title>
-    <link rel="stylesheet" href="">
+    
     <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
     <style>
+        @keyframes breathing {
+            0% { font-size: 6em; }
+            50% { font-size: 6.5em; }
+            100% { font-size: 6em; }
+        }
+
+
         body {
             background-color: #cde6d0;
             font-family: 'Times New Roman', serif;
-            background-image: url('https://cdn.discordapp.com/attachments/898050262441287701/1241387188084805674/e90e6ced05e7e96a17cf66866b4031cd.gif?ex=664a0369&is=6648b1e9&hm=c269cf2a26bddab1c80453eaf8ceac2fab0802db7ae2d698812f22afbd78ed30&');
-            background-position: center;
+            background-image: url('https://cdn.discordapp.com/attachments/1098226829246078987/1241685094263951401/thumb-1920-1353166.png?ex=664b18db&is=6649c75b&hm=0592a7bdf91e9a04877977cc6565815b9db514675c48b8de72a68d4b89220144&');
             background-size: cover;
             display: flex;
         }
         .button-container {
-    position: absolute;
-    left: 0;
-    top: 20%;
-    transform: translateY(-50%);
-    margin-left: 20px; /* Adjust this value as needed for spacing */
+            font-family: "Old English Text MT", serif;
+            position: absolute;
+            left: 0;
+            top: 20%;
+            transform: translateY(-50%);
+            margin-left: 20px; /* Adjust this value as needed for spacing */
 }
 
 
@@ -40,6 +47,9 @@
             height: 100%;
             outline: 3px dashed #c2dec5;
             outline-offset: -13px;
+            font-family:  'Mantinia', serif;
+            background-color: rgba(253, 245, 247, 0);
+            
 			
         }
 
@@ -180,12 +190,13 @@
 
         .logoBox {
             width: 70%;
-            background: #cd853f; /* Peruvian Brown */
+            background: #ffdc73; /* Peruvian Brown */
             position: absolute;
             transform: rotateZ(-32deg) translateX(2%) translateY(175%);
             border: 3px solid black;
             text-align: center;
             box-shadow: inset 0px 2px 12px 0px white;
+            
         }
 
         .logoName {
@@ -196,7 +207,10 @@
             -webkit-text-fill-color: white; /* Will override color (regardless of order) */
             -webkit-text-stroke-width: 1px;
             -webkit-text-stroke-color: #cfc2c3;
+           
         }
+
+        
 
         .card-box {
             position: absolute;
@@ -269,50 +283,185 @@
         .player-selection {
             display: none; /* Hide initially */
         }
-        #select-players-btn {
-            background-color: #4CAF50; /* Green background */
-            border: none; /* Remove border */
-            color: white; /* White text */
-            padding: 10px 20px; /* Padding */
-            text-align: center; /* Center text */
-            text-decoration: none; /* Remove underline */
-            display: inline-block; /* Display as inline block */
-            font-size: 14px; /* Font size */
-            margin: 10px 2px; /* Margin */
-            transition-duration: 0.4s; /* Animation duration */
-            cursor: pointer; /* Cursor pointer */
-            border-radius: 8px; /* Border radius */
-            max-height: 40px;
+    
+        .token-option {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
         }
-        #select-players-btn:hover {
-            background-color: #45a049; /* Darker green background on hover */
+        .token-option > div {
+            width: 24%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            cursor: pointer;
         }
-        .token {
-        width: 20px; /* Adjust width as needed */
-        height: 20px; /* Adjust height as needed */
-        background-color: #000; /* Set a background color */
-        position: absolute; /* Ensure tokens are positioned absolutely */
-        border-radius: 50%; /* Make tokens circular */
-        visibility: hidden
+        .token-option > div:hover {
+            background-color: #f0f0f0;
+        }
+        .token-option > div img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensure the popup is on top of other elements */
+        }
+
+        .popup {
+            background-color: #fff0db;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+        }
+
+        .option-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid red;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: pink;
+        }
+        .custom-button {
+            font-family:  'Mantinia', serif;
+    background-color: #ffdc73; 
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+.custom-button:hover {
+    background-color: black; /* Darker green */
+}
+.selected-token {
+    border: 2px solid blue;
+    background-color: #e0f7fa; /* Light blue background for selected token */
+    transition: border 0.3s ease, background-color 0.3s ease;
+}
+#play-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family:  'Mantinia', serif;
+    background-color: brown; 
+    border: none;
+    color: white;
+    border-radius: 25px;
+}
+
+/* Apply animation to player info container */
+#player-info-container {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 200px;
+    height: 100%;
+    border-left: 1px solid #ccc;
+    padding: 20px;
+    overflow-y: auto;
+    animation: slideIn 0.5s ease forwards; /* Apply animation */
+}
+
+/* Define animation behavior */
+.player-info {
+    margin-bottom: 0px;
+    text-align: center;
+    opacity: 0; /* Initially hide the player info */
+    animation: fadeIn 0.5s ease forwards; /* Apply animation */
+}
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
     }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.player-info h3 {
+    margin: 0 0 10px 0;
+}
+
+.disabled-token {
+    opacity: 0.5;
+    pointer-events: none; /* Prevent click events */
+}
+
+
+
+
+.player-info img {
+    max-width: 50px; /* Adjust the maximum width of the token images */
+}
+.token {
+    width: 20px;
+    height: 20px;
+    background-color: red; /* Customize token appearance */
+    border-radius: 50%; /* Make tokens circular */
+    margin: 5px; /* Adjust spacing between tokens */
+}
+@keyframes roll {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+}
+
+.dice {
+    font-family: 'Mantinia', serif;
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 1px solid black;
+    position: absolute;
+    animation-name: roll;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    top: 80px;
+    background-image: url('https://cdn.discordapp.com/attachments/1098226829246078987/1241671676169552015/4bafdc094573bc82840bfcd05bc92cde_w200.gif?ex=664b0c5c&is=6649badc&hm=50b3886dd3731098aa73a5c9cf6786b07750117341f97d8092cb379ae0665599&');
+    background-position: center;
+}
+#roll-dice-button {
+    display: none; /* Initially hide the Roll Dice button */
+}
+
     </style>
 </head>
-<body>
-    <button id="select-players-btn" onclick="showPlayerSelection()">Select Players</button>
-    <div class="player-selection">
-        <p>Select Number of Players:</p>
-        <label><input type="radio" name="num-players" value="1"> 1 Player</label><br>
-        <label><input type="radio" name="num-players" value="2"> 2 Players</label><br>
-        <label><input type="radio" name="num-players" value="3"> 3 Players</label><br>
-        <label><input type="radio" name="num-players" value="4"> 4 Players</label><br>
-        <button onclick="startGame()">Start Game</button>
-    </div>
-    </div>
-    <div class="button-container">
-        <button id="roll-dice-btn" onclick="rollDice()">Roll Dice</button>
-    </div>
-   
-
+<body>  
     
     <div class="responsive" id="board">
         
@@ -489,66 +638,193 @@
         </div>
 
     </div>
- 
-    <script>
-        function showPlayerSelection() {
-            var playerSelection = document.querySelector('.player-selection');
-            if (playerSelection.style.display === 'none') {
-                playerSelection.style.display = 'block';
-            } else {
-                playerSelection.style.display = 'none';
-            }
-        }
-    
-        function startGame() {
-    var numPlayers = document.querySelector('input[name="num-players"]:checked');
-    if (numPlayers) {
-        numPlayers = parseInt(numPlayers.value); // Convert to integer
-        alert("Starting game with " + numPlayers + " players!");
+    <div class="button-container">
+        <button id="select-players" class="custom-button">Select Number of Players</button>
+
+    </div>
+  
         
-        // Hide player selection
-        document.querySelector('.player-selection').style.display = 'none';
+        <div class="popup-container" id="popup-container">
+            <div class="popup" id="popup">
+                <div class="option-container" id="option-container"></div>
+                <div class="token-container" id="token-container"></div>
+                <button id="play-button">Play</button>
+            </div>
+        </div>
+        <div id="player-info-container"></div>
+        <div class="button-container">
+            <button id="roll-dice-button" class="dice">Roll Dice</button>
+        </div>
+        <script>
+document.getElementById('select-players').addEventListener('click', function() {
+    // Show the popup
+    document.getElementById('popup-container').style.display = 'flex';
 
-        // Place tokens on the "Collect Tribute" square
-        var board = document.getElementById('board');
-        for (var i = 1; i <= numPlayers; i++) {
-            var token = document.createElement('div');
-            token.className = 'token';
-            token.style.backgroundColor = getRandomColor(); // Just for demonstration
-            
-            // Position the tokens on the "Collect Tribute" square
-            token.style.top = '90%';
-            token.style.right = i === 1 ? '5%' : (i === 2 ? '10%' : (i === 3 ? '15%' : '20%'));
+    // Clear previous options if any
+    document.getElementById('option-container').innerHTML = '';
+    document.getElementById('token-container').innerHTML = ''; // Clear token container as well
 
-            // Set a unique ID for each token based on player number
-            token.id = "token-player" + i;
+    // Array of options
+    var options = ['2 Players', '3 Players', '4 Players'];
 
-            board.appendChild(token);
-        }
-        var tokens = document.querySelectorAll('.token');
-        tokens.forEach(function(token) {
-            token.style.visibility = 'visible';
+    // Create options dynamically
+    options.forEach(function(option) {
+        var optionElement = document.createElement('div');
+        optionElement.classList.add('option');
+        optionElement.textContent = option;
+        optionElement.addEventListener('click', function() {
+            // Call the function to show token options based on the selected number of players
+            showTokenOptions(parseInt(option));
         });
-    } else {
-        alert("Please select the number of players.");
+        document.getElementById('option-container').appendChild(optionElement);
+    });
+});
+
+function showTokenOptions(numPlayers) {
+    // Clear previous token options if any
+    document.getElementById('token-container').innerHTML = '';
+
+    // Array of tokens
+    var tokens = ['medic.png', 'compass.png', 'binoculars.png', 'medal.png']; // Customize with your token images or names
+
+    // Create flexboxes with tokens dynamically
+    for (var i = 0; i < numPlayers; i++) {
+        var playerLabel = document.createElement('div');
+        playerLabel.textContent = 'Player ' + (i + 1) + ':';
+        playerLabel.style.marginBottom = '5px'; // Add some spacing between the label and the tokens
+        document.getElementById('token-container').appendChild(playerLabel);
+
+        var tokenElement = document.createElement('div');
+        tokenElement.classList.add('token-option');
+        tokenElement.dataset.player = i + 1; // Add player number to the token option
+
+        for (var j = 0; j < tokens.length; j++) {
+            var tokenBox = document.createElement('div');
+            tokenBox.classList.add('token-box');
+            // Create an image element for each token
+            var tokenImage = document.createElement('img');
+            tokenImage.src = tokens[j];
+            tokenBox.appendChild(tokenImage);
+            tokenBox.addEventListener('click', function() {
+                // Get the player number from the parent token option
+                var playerNumber = this.parentElement.dataset.player;
+
+                // Remove highlight from all tokens for this player
+                var siblingTokens = document.querySelectorAll('[data-player="' + playerNumber + '"] .token-box');
+                siblingTokens.forEach(function(token) {
+                    token.classList.remove('selected-token');
+                });
+
+                // Highlight the selected token
+                this.classList.add('selected-token');
+
+                // Disable the selected token for other players
+                var selectedTokenSrc = this.querySelector('img').src;
+                var allTokenBoxes = document.querySelectorAll('.token-box img');
+                allTokenBoxes.forEach(function(img) {
+                    if (img.src === selectedTokenSrc && !img.parentElement.classList.contains('selected-token')) {
+                        img.parentElement.classList.add('disabled-token');
+                    }
+                });
+            });
+            tokenElement.appendChild(tokenBox);
+        }
+        document.getElementById('token-container').appendChild(tokenElement);
     }
+    // Make sure the token options are visible
+    document.getElementById('token-container').style.display = 'block';
+
+    // Show the play button
+    document.getElementById('play-button').style.display = 'block';
 }
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
+
+document.getElementById('play-button').addEventListener('click', function() {
+    var playerInfoContainer = document.getElementById('player-info-container');
+    playerInfoContainer.innerHTML = ''; // Clear previous player info
+
+    // Get all selected tokens
+    var selectedTokens = document.querySelectorAll('.selected-token');
+    selectedTokens.forEach(function(token, index) {
+        var playerInfo = document.createElement('div');
+        playerInfo.classList.add('player-info');
+
+        var playerTitle = document.createElement('h3');
+        playerTitle.textContent = 'Player ' + (index + 1);
+        playerInfo.appendChild(playerTitle);
+
+        var tokenImage = token.querySelector('img').cloneNode();
+        playerInfo.appendChild(tokenImage);
+
+        playerInfoContainer.appendChild(playerInfo);
+    });
+
+    // Show the player info container
+    playerInfoContainer.style.display = 'block';
+
+    // Hide the popup
+    document.getElementById('popup-container').style.display = 'none';
+});
+
+document.getElementById('play-button').addEventListener('click', function() {
+    var selectedTokens = document.querySelectorAll('.selected-token img');
+    var numPlayers = selectedTokens.length;
+    var square2 = document.querySelector('.square2');
+
+    // Generate tokens for each player
+    for (var i = 0; i < numPlayers; i++) {
+        var tokenImage = selectedTokens[i].cloneNode(true); // Clone the selected token image
+        tokenImage.classList.add('token');
+        tokenImage.alt = 'Token ' + (i + 1); // Set alt text if necessary
+        square2.appendChild(tokenImage); // Append token image to square2
+    }
+    document.getElementById('select-players').style.display = 'none';
+    document.getElementById('roll-dice-button').style.display = 'block'; document.getElementById('roll-dice-button').style.display = 'block';
+});
+
+document.getElementById('roll-dice-button').addEventListener('click', function() {
+    // Add your dice rolling functionality here
+    // For example, you can generate a random number between 1 and 6
+    var diceResult = Math.floor(Math.random() * 6) + 1;
+    alert('You rolled a ' + diceResult + '!');
+
+    // Move player tokens based on the dice result
+    movePlayerTokens(diceResult);
+});
+
+function movePlayerTokens(steps) {
+    // Get all player tokens
+    var playerTokens = document.querySelectorAll('.token');
+
+    // Move each player token
+    playerTokens.forEach(function(token) {
+        // Get the current square of the token
+        var currentSquare = token.parentElement;
+        var currentRow = currentSquare.parentElement; // Get the current row
+        
+        // Move the token by the specified number of steps
+        for (var i = 0; i < steps; i++) {
+            // Move to the next square (or loop back to the beginning if at the end)
+            currentSquare = currentSquare.nextElementSibling || currentSquare.parentElement.firstElementChild;
+            
+            // If reached the end of the row, move to the next row
+            if (!currentSquare) {
+                currentRow = currentRow.nextElementSibling || currentRow.parentElement.firstElementChild; // Move to the next row
+                currentSquare = currentRow.firstElementChild; // Move to the first square of the next row
             }
-            return color;
         }
-    
-        function rollDice() {
-            var diceRoll = Math.floor(Math.random() * 6) + 1; // Generates a random number between 1 and 6
-            alert("You rolled a " + diceRoll);
-        }
-    </script>
-    
-    
-    
+        
+        // Append the token to the new square
+        currentSquare.appendChild(token);
+    });
+}
+
+// Call the initializeGame function when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeGame();
+});
+        </script>
+        
+        
+        
 </body>
 </html>
