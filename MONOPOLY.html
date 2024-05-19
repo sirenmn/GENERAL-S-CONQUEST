@@ -17,10 +17,11 @@
         .button-container {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 20%;
     transform: translateY(-50%);
     margin-left: 20px; /* Adjust this value as needed for spacing */
 }
+
 
 
         div {
@@ -265,24 +266,54 @@
             height: 50vw; /* Adjust these dimensions as needed */
             margin: 10px auto;
         }
-       
+        .player-selection {
+            display: none; /* Hide initially */
+        }
+        #select-players-btn {
+            background-color: #4CAF50; /* Green background */
+            border: none; /* Remove border */
+            color: white; /* White text */
+            padding: 10px 20px; /* Padding */
+            text-align: center; /* Center text */
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Display as inline block */
+            font-size: 14px; /* Font size */
+            margin: 10px 2px; /* Margin */
+            transition-duration: 0.4s; /* Animation duration */
+            cursor: pointer; /* Cursor pointer */
+            border-radius: 8px; /* Border radius */
+            max-height: 40px;
+        }
+        #select-players-btn:hover {
+            background-color: #45a049; /* Darker green background on hover */
+        }
+        .token {
+        width: 20px; /* Adjust width as needed */
+        height: 20px; /* Adjust height as needed */
+        background-color: #000; /* Set a background color */
+        position: absolute; /* Ensure tokens are positioned absolutely */
+        border-radius: 50%; /* Make tokens circular */
+        visibility: hidden
+    }
     </style>
 </head>
 <body>
+    <button id="select-players-btn" onclick="showPlayerSelection()">Select Players</button>
+    <div class="player-selection">
+        <p>Select Number of Players:</p>
+        <label><input type="radio" name="num-players" value="1"> 1 Player</label><br>
+        <label><input type="radio" name="num-players" value="2"> 2 Players</label><br>
+        <label><input type="radio" name="num-players" value="3"> 3 Players</label><br>
+        <label><input type="radio" name="num-players" value="4"> 4 Players</label><br>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+    </div>
     <div class="button-container">
         <button id="roll-dice-btn" onclick="rollDice()">Roll Dice</button>
     </div>
-    <div id="playerInfo">
-        <h2 id="playerName">Player 1</h2>
-        <p id="playerMoney">Money: $2500</p>
-        <p id="playerProperties">Properties: None</p>
-    </div>
+   
 
-    <div id="player2Info" style="display: none;">
-        <h2 id="playerName2">Player 2</h2>
-        <p id="playerMoney2">Money: $2500</p>
-        <p id="playerProperties2">Properties: None</p>
-    </div>
+    
     <div class="responsive" id="board">
         
         
@@ -293,7 +324,7 @@
                 <div class="square1">
                     <div class="header header-top red"></div>
                     <div class="firstLine firstLine-top">Northern <br /> Territory</div>
-                    <div class="token" id="token-player2"></div>
+                    
                 </div>
                 <div class="square1">                    
                     <div class="firstLine firstLine-top no-color">Event</div>
@@ -458,12 +489,66 @@
         </div>
 
     </div>
-    <div id="token-player1" class="token"></div>
-    <div id="token-player2" class="token"></div>
-    
+ 
     <script>
+        function showPlayerSelection() {
+            var playerSelection = document.querySelector('.player-selection');
+            if (playerSelection.style.display === 'none') {
+                playerSelection.style.display = 'block';
+            } else {
+                playerSelection.style.display = 'none';
+            }
+        }
+    
+        function startGame() {
+    var numPlayers = document.querySelector('input[name="num-players"]:checked');
+    if (numPlayers) {
+        numPlayers = parseInt(numPlayers.value); // Convert to integer
+        alert("Starting game with " + numPlayers + " players!");
+        
+        // Hide player selection
+        document.querySelector('.player-selection').style.display = 'none';
 
+        // Place tokens on the "Collect Tribute" square
+        var board = document.getElementById('board');
+        for (var i = 1; i <= numPlayers; i++) {
+            var token = document.createElement('div');
+            token.className = 'token';
+            token.style.backgroundColor = getRandomColor(); // Just for demonstration
+            
+            // Position the tokens on the "Collect Tribute" square
+            token.style.top = '90%';
+            token.style.right = i === 1 ? '5%' : (i === 2 ? '10%' : (i === 3 ? '15%' : '20%'));
+
+            // Set a unique ID for each token based on player number
+            token.id = "token-player" + i;
+
+            board.appendChild(token);
+        }
+        var tokens = document.querySelectorAll('.token');
+        tokens.forEach(function(token) {
+            token.style.visibility = 'visible';
+        });
+    } else {
+        alert("Please select the number of players.");
+    }
+}
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    
+        function rollDice() {
+            var diceRoll = Math.floor(Math.random() * 6) + 1; // Generates a random number between 1 and 6
+            alert("You rolled a " + diceRoll);
+        }
     </script>
+    
+    
     
 </body>
 </html>
