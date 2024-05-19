@@ -9,7 +9,19 @@
         body {
             background-color: #cde6d0;
             font-family: 'Times New Roman', serif;
+            background-image: url('https://cdn.discordapp.com/attachments/898050262441287701/1241387188084805674/e90e6ced05e7e96a17cf66866b4031cd.gif?ex=664a0369&is=6648b1e9&hm=c269cf2a26bddab1c80453eaf8ceac2fab0802db7ae2d698812f22afbd78ed30&');
+            background-position: center;
+            background-size: cover;
+            display: flex;
         }
+        .button-container {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 20px; /* Adjust this value as needed for spacing */
+}
+
 
         div {
             box-sizing: border-box;
@@ -75,16 +87,23 @@
             width: 20%;
             position: absolute;
             outline: 2px solid black;
-            background: #8B4513; /* Dark Brown */
+            
         }
 
-        .header-top, .header-bottom {
-            background: #8B4513; /* Dark Brown */
+        .header-top{
+            background: red /* Dark Brown */
+        }
+        .header-bottom {
+            background: #FA8072;
         }
 
-        .header-left, .header-right {
-            background: #cd853f; /* Peruvian Brown */
+        .header-left {
+            background:#800020; /* Peruvian Brown */
         }
+        .header-right {
+            background:#023020 /* Peruvian Brown */
+        }
+        
 
         .firstLine {
             position: absolute;
@@ -239,45 +258,42 @@
             text-align: center;
             margin-top: 10%; /* Adjust the margin-top as needed */
         }
-        .token-container {
-            display: flex;
-    flex-direction: column; /* Display tokens vertically */
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin-top: 20px;
-    position: absolute;
-    left: 10px; /* Adjust left position as needed */
-    top: 50%; /* Position vertically centered */
-    transform: translateY(-50%);
-    border: 2px solid brown; /* Add border */
-    padding: 10px; /* Add padding to separate tokens from border */
-    width: 10vw;
-    height: 20vw;
-}
-
-.token-container img {
-    width: 4vw; /* Adjust width as needed */
-    height: 3vw; /* Adjust height as needed */
-    border-radius: 10%; /* Makes the images round */
-    font-size: 1vw;
-}
-
+    
+        .responsive {
+            position: relative; /* Ensure the board is a positioning context for the tokens */
+            width: 60vw; /* Adjust these dimensions as needed */
+            height: 50vw; /* Adjust these dimensions as needed */
+            margin: 10px auto;
+        }
+       
     </style>
 </head>
 <body>
+    <div class="button-container">
+        <button id="roll-dice-btn" onclick="rollDice()">Roll Dice</button>
+    </div>
+    <div id="playerInfo">
+        <h2 id="playerName">Player 1</h2>
+        <p id="playerMoney">Money: $2500</p>
+        <p id="playerProperties">Properties: None</p>
+    </div>
 
-    <div class="responsive">
-        <div id="game-board" class="token-container">
-            <!-- Selected tokens will be displayed here -->
-        </div>
+    <div id="player2Info" style="display: none;">
+        <h2 id="playerName2">Player 2</h2>
+        <p id="playerMoney2">Money: $2500</p>
+        <p id="playerProperties2">Properties: None</p>
+    </div>
+    <div class="responsive" id="board">
+        
+        
         <div class="mainSquare">
-
+         
             <div class="row top">
                 <div class="square2"><span class="corner corner1">Safe <br /> House</span></div>
                 <div class="square1">
                     <div class="header header-top red"></div>
                     <div class="firstLine firstLine-top">Northern <br /> Territory</div>
+                    <div class="token" id="token-player2"></div>
                 </div>
                 <div class="square1">                    
                     <div class="firstLine firstLine-top no-color">Event</div>
@@ -442,43 +458,12 @@
         </div>
 
     </div>
-
+    <div id="token-player1" class="token"></div>
+    <div id="token-player2" class="token"></div>
     
-
     <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const totalSquares = 40; // Define the number of squares on the board
-            const urlParams = new URLSearchParams(window.location.search);
-            const selectedTokens = [];
-            urlParams.forEach((value, key) => {
-                if (key.startsWith('player')) {
-                    selectedTokens.push(value);
-                }
-            });
-            const playerPositions = new Array(selectedTokens.length).fill(0);
-            const gameBoard = document.getElementById('game-board');
-            selectedTokens.forEach((token, index) => {
-                const tokenImage = document.createElement('img');
-                tokenImage.src = token;
-                tokenImage.alt = `Player ${index + 1} Token`;
-                gameBoard.appendChild(tokenImage);
-                const rollDiceButton = document.createElement('button');
-                rollDiceButton.textContent = 'Roll Dice';
-                rollDiceButton.classList.add('roll-dice-button');
-                rollDiceButton.addEventListener('click', () => {
-                    const diceRoll = Math.floor(Math.random() * 6) + 1;
-                    playerPositions[index] = (playerPositions[index] + diceRoll) % totalSquares;
-                    updateTokenPosition(tokenImage, playerPositions[index]);
-                });
-                gameBoard.appendChild(rollDiceButton);
-            });
-            function updateTokenPosition(tokenImage, newPosition) {
-                const row = Math.floor(newPosition / 10);
-                const column = newPosition % 10;
-                tokenImage.style.top = `${row * 10}vw`;
-                tokenImage.style.left = `${column * 10}vw`;
-            }
-        });
+
     </script>
+    
 </body>
 </html>
