@@ -1,3 +1,13 @@
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+
 div {
 	box-sizing: border-box;
 	text-transform: uppercase;
@@ -195,16 +205,18 @@ div {
 	border: 3px solid black;
 	text-align: center;
 	box-shadow: inset 0px 2px 12px 0px white;
+	font-size: 0.2vw;
 }
 
 .logoName {
-	font-size: 7.1vw;
+	font-size: 0.2vw;
 	color: #ffdc73;
 	font-family: futura;
 	text-shadow: -4px 3px 0px black;
 	-webkit-text-fill-color: white; /* Will override color (regardless of order) */
 	-webkit-text-stroke-width: 2px;
 	-webkit-text-stroke-color: #cfc2c3;
+	
 }
 
 .card-box {
